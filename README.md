@@ -13,10 +13,11 @@ A Retrieval-Augmented Generation (RAG) system for answering questions about muse
 
 ## Prerequisites
 
-- Node.js (v16 or higher)
-- npm (v7 or higher)
+- Node.js (v20 or higher)
+- npm (v10 or higher)
 - OpenAI API key
-- Redis (optional, for caching)
+- Github Tocken (Public Read Access is enough)
+- Docker 
 
 ## Setup
 
@@ -34,25 +35,29 @@ npm install
 3. Create a `.env` file in the root directory with the following variables:
 ```env
 OPENAI_API_KEY=your_openai_api_key
-GITHUB_TOKEN=your_token(public-repo-is-enough)
-PORT=3000
-NODE_ENV=development
+GITHUB_TOKEN=your_token
 CHROMA_DB_PATH=./data/chroma
+NODE_ENV=development
+PORT=3000
 ```
 
 ## Usage
 
-1. Prepare the data:
+1. Run local ChromaDB:
+```bash
+docker-compose up -d
+```
+
+2. Prepare the data:
 ```bash
 npm run setup
 ```
 
-2. For development with hot-reload:
+3. For development with hot-reload:
 ```bash
 npm run dev
 ```
-
-3. The API will be available at `http://localhost:3000`
+The API will be available at `http://localhost:3000`
 
 ## API Endpoints
 
