@@ -23,7 +23,7 @@ A Retrieval-Augmented Generation (RAG) system for answering questions about muse
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd museum-rag
+cd rag
 ```
 
 2. Install dependencies:
@@ -34,21 +34,17 @@ npm install
 3. Create a `.env` file in the root directory with the following variables:
 ```env
 OPENAI_API_KEY=your_openai_api_key
+GITHUB_TOKEN=your_token(public-repo-is-enough)
 PORT=3000
 NODE_ENV=development
 CHROMA_DB_PATH=./data/chroma
 ```
 
-4. Build the project:
-```bash
-npm run build
-```
-
 ## Usage
 
-1. Start the server:
+1. Prepare the data:
 ```bash
-npm start
+npm run setup
 ```
 
 2. For development with hot-reload:
