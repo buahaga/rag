@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+		
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug App (ts-node)",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "args": [
+        "${workspaceFolder}/src/app.ts"
+      ],
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/.env",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Built App (dist)",
+      "program": "${workspaceFolder}/dist/app.js",
+      "cwd": "${workspaceFolder}",
+      "protocol": "inspector",
+      "envFile": "${workspaceFolder}/.env",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    }
+  ]
+} 

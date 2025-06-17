@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum RAG System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #answer {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        .loading {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .error {
+            color: #dc3545;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Museum RAG Question-Answering System</h1>
+        <div class="form-group">
+            <label for="question">Ask a question about the museum collection:</label>
+            <input type="text" id="question" placeholder="e.g., Show me American paintings from the 19th century">
+        </div>
+        <button onclick="askQuestion()">Get Answer</button>
+        <div class="loading" id="loading">Loading...</div>
+        <div id="answer"></div>
+    </div>
+
+    <script>
+        async function askQuestion() {
+            const questionInput = document.getElementById('question');
+            const answerDiv = document.getElementById('answer');
+            const loadingDiv = document.getElementById('loading');
+            const question = questionInput.value.trim();
+
+            if (!question) {
+                answerDiv.innerHTML = '<p class="error">Please enter a question</p>';
+                return;
+            }
+
+            loadingDiv.style.display = 'block';
+            answerDiv.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/questions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    answerDiv.innerHTML = `
+                        <h3>Answer:</h3>
+                        <p>${data.answer}</p>
+                        ${data.sources ? `
+                            <h3>Sources:</h3>
+                            <ul>
+                                ${data.sources.map(source => `
+                                    <li>${source.title} by ${source.artist} (${source.date})</li>
+                                `).join('')}
+                            </ul>
+                        ` : ''}
+                    `;
+                } else {
+                    answerDiv.innerHTML = `<p class="error">Error: ${data.error}</p>`;
+                }
+            } catch (error) {
+                answerDiv.innerHTML = '<p class="error">Error: Could not connect to the server</p>';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        // Allow pressing Enter to submit
+        document.getElementById('question').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+    </script>
+</body>
+</html> 
