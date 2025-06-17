@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "download-data": "ts-node src/scripts/downloadData.ts",
     "prepare-data": "npm run download-data",
-    "setup": "cp .env.example .env || echo 'Create .env manually'; npm install; npm run prepare-data; npm run build"
+    "setup": "npm install; npm run prepare-data; npm run build"
   },
   "keywords": [
     "rag",
